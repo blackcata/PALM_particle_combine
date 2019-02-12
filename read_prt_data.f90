@@ -45,6 +45,7 @@
 ! analysis. Compile and execute this program in the folder where your particle 
 ! data (_000000, _000001, ...) is stored.
 !------------------------------------------------------------------------------!
+
     !<KM_FLAG
     USE IO_module 
     USE particle_combine_module
@@ -113,16 +114,22 @@
 !
 !-- Check if file from PE0 exists and terminate program if it doesn't.
     WRITE (i_proc_char,'(''_'',I6.6)')  i_proc
-    INQUIRE ( FILE=i_proc_char, EXIST=found )
+
+    !<KM_FLAG
+    dir_name   = "/home/km109/PALM_60/JOBS/NP_test/OUTPUT/LAT_40_H0_200_TIME_12DAY/NP_test_prt_dat.021/"
+    path_name  = TRIM(dir_name)//TRIM(i_proc_char)
+    INQUIRE ( FILE=path_name, EXIST=found )
+    !INQUIRE ( FILE=i_proc_char, EXIST=found )
+
 !
 !-- Estimate the number of files (equal to the number of PEs which
 !-- have been used in PALM)
     DO  WHILE ( found )
-       OPEN ( 85, FILE=i_proc_char, FORM='UNFORMATTED' )
+       !<KM_FLAG
+       path_name  =  TRIM(dir_name)//TRIM(i_proc_char)
        i_proc = i_proc + 1
        WRITE (i_proc_char,'(''_'',I6.6)')  i_proc
-       INQUIRE ( FILE=i_proc_char, EXIST=found )
-       CLOSE( 85 )
+       INQUIRE ( FILE=path_name, EXIST=found )
     ENDDO
 !
 !-- Info-output
@@ -135,7 +142,7 @@
        PRINT*, '    program terminated'
        STOP
     ENDIF
-!
+
 !-- Set number of files and opens them sequentially
     i_proc_end = i_proc-1
 
@@ -143,7 +150,11 @@
 !
 !--    Open particle data file for each process
        WRITE (i_proc_char,'(''_'',I6.6)')  i_proc
-       OPEN ( 85, FILE=i_proc_char, FORM='UNFORMATTED' ) 
+
+       !<KM_FLAG
+       path_name  =  TRIM(dir_name)//TRIM(i_proc_char)
+       OPEN ( 85, FILE=path_name, FORM='UNFORMATTED' )
+       !OPEN ( 85, FILE=i_proc_char, FORM='UNFORMATTED' ) 
 !
 !--    Read general description of file and inform user
        READ ( 85 )  run_description_header
