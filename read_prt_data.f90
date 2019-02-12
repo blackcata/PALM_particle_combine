@@ -45,6 +45,9 @@
 ! analysis. Compile and execute this program in the folder where your particle 
 ! data (_000000, _000001, ...) is stored.
 !------------------------------------------------------------------------------!
+    !<KM_FLAG
+    USE IO_module 
+    USE particle_combine_module
 
     IMPLICIT NONE
 
