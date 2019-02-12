@@ -10,7 +10,7 @@
 
           MODULE IO_module
 
-            CHARACTER(LEN=65) :: file_1_name, file_2_name, dir_name, path_name
+            CHARACTER(LEN=100) :: file_1_name, file_2_name, dir_name, path_name
 
           !--------------------------------------------------------------------!
           !                   Interfaces of IO Subroutines                     !
