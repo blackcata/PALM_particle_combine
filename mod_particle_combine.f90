@@ -13,7 +13,7 @@ MODULE particle_combine_module
 
     IMPLICIT NONE
 
-    INTEGER  :: total_particle_number 
+    INTEGER  :: total_particle_number, class_num 
     REAL(KIND=8)  ::  target_time, eps_t  
 
     SAVE
@@ -27,10 +27,14 @@ MODULE particle_combine_module
 !   PURPOSE : Initial setup for specific slice or time                         !
 !                                                             2019.02.12 K.Noh !
 !                                                                              !
+!   class_num  =  0 : all data                                                 !
+!                                                                              !
 !------------------------------------------------------------------------------!
   SUBROUTINE initial_setting
 
       IMPLICIT NONE
+
+      class_num = 0
 
       total_particle_number = 0
 

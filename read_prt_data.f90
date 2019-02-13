@@ -117,6 +117,7 @@
 
     !<KM_FLAG
     CALL initial_setting
+    CALL FOLDER_SETUP
     path_name  = TRIM(dir_name)//TRIM(i_proc_char)
     INQUIRE ( FILE=path_name, EXIST=found )
     !INQUIRE ( FILE=i_proc_char, EXIST=found )

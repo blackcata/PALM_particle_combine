@@ -22,15 +22,26 @@
             END INTERFACE FOLDER_SETUP
 
           CONTAINS
+
+!------------------------------------------------------------------------------!
+!                                                                              !
+!   SUBROUTINE : FOLDER_SETUP                                                  !
+!                                                                              !
+!   PURPOSE : Initialization the result folder                                 !
+!                                                                              !
+!                                                             2017.03.02 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
             SUBROUTINE FOLDER_SETUP
               IMPLICIT NONE
 
               !------------------------------------------------------------------!
               !                  Make & Initialize Result folder                 !
               !------------------------------------------------------------------!
-              dir_name  = 'RESULT'
-              CALL SYSTEM('mkdir '//TRIM(dir_name))
-              CALL SYSTEM('rm -rf ./'//TRIM(dir_name)//'/*.plt')
+              path_name = TRIM(dir_name)//"RESULT"
+              print*,path_name
+              CALL SYSTEM('mkdir '//TRIM(path_name))
+              CALL SYSTEM('rm -rf ./'//TRIM(path_name)//'/*.plt')
 
             END SUBROUTINE FOLDER_SETUP
 
