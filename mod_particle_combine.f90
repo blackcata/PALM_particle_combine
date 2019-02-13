@@ -14,7 +14,7 @@ MODULE particle_combine_module
     IMPLICIT NONE
 
     INTEGER  :: total_particle_number, class_num 
-    REAL(KIND=8)  ::  target_time, eps_t  
+    REAL(KIND=8)  ::  target_time, eps_t, target_z, eps_z  
 
     SAVE
 
@@ -28,18 +28,22 @@ MODULE particle_combine_module
 !                                                             2019.02.12 K.Noh !
 !                                                                              !
 !   class_num  =  0 : all data                                                 !
+!                 1 : xy slice
 !                                                                              !
 !------------------------------------------------------------------------------!
   SUBROUTINE initial_setting
 
       IMPLICIT NONE
 
-      class_num = 0
+      class_num = 1
 
       total_particle_number = 0
 
       target_time  =  97200.0
       eps_t        =  1000000.0
+
+      target_z     = -10.0 
+      eps_z        = 2.5
 
       dir_name   = "/home/km109/PALM_60/JOBS/NP_test/OUTPUT/LAT_40_H0_200_TIME_12DAY/NP_test_prt_dat.021/"
 
@@ -61,18 +65,29 @@ MODULE particle_combine_module
       INTEGER,INTENT(IN)  ::  i_proc
       REAL(KIND=8),INTENT(IN)  ::  simulated_time
       
-      CHARACTER(LEN=200)  ::  time_num, file_name 
+      CHARACTER(LEN=200)  ::  time_num, file_name, slice_num
 
       IF ( abs(simulated_time - target_time) < eps_t ) THEN 
           WRITE(time_num,"(I7.7)") INT(simulated_time)
           SELECT CASE (class_num)
               CASE(0) 
-              file_name = TRIM(dir_name)//"RESULT/particle_3d_time_"//TRIM(time_num)//".plt"
-              OPEN(100,FILE=TRIM(file_name),FORM='FORMATTED',POSITION='APPEND')
+                file_name = TRIM(dir_name)//"RESULT/particle_3d_time_"          &
+                                          //TRIM(time_num)//".plt"
+                OPEN(100,FILE=TRIM(file_name),FORM='FORMATTED',POSITION='APPEND')
 
-              IF(i_proc == 0) WRITE(100,*) 'VARIABLES = X,Y,W'
-              IF(i_proc == 0) WRITE(100,*) 'ZONE'
-              IF(i_proc == 0) WRITE(100,*) 'SOLUTIONTIME =',simulated_time
+                IF(i_proc == 0) WRITE(100,*) 'VARIABLES = X,Y,Z'
+                IF(i_proc == 0) WRITE(100,*) 'ZONE'
+                IF(i_proc == 0) WRITE(100,*) 'SOLUTIONTIME =',simulated_time
+
+              CASE(1)
+                WRITE(slice_num,"(I3.0)") INT(target_z)
+                file_name = TRIM(dir_name)//"RESULT/particle_xy_"//             &
+                            TRIM(slice_num)//"_time_"//TRIM(time_num)//".plt"
+                OPEN(100,FILE=TRIM(file_name),FORM='FORMATTED',POSITION='APPEND')
+
+                IF(i_proc == 0) WRITE(100,*) 'VARIABLES = X,Y,PHY'
+                IF(i_proc == 0) WRITE(100,*) 'ZONE'
+                IF(i_proc == 0) WRITE(100,*) 'SOLUTIONTIME =',simulated_time
 
           END SELECT
       END IF 
