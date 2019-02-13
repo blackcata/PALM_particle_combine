@@ -195,7 +195,7 @@
           ENDIF
 
           !<KM_FLAG
-          IF (i_proc == 0 ) CALL write_header(simulated_time,i_proc)
+          CALL write_header(simulated_time,i_proc)
           PRINT*, '*** time of analyzed data set:', simulated_time
 
           READ ( 85 )  prt_count
@@ -227,9 +227,18 @@
                    particles => grid_particles(kp,jp,ip)%particles
 !
 !--                Add your analysis here
-!                   DO  n = 1, number_of_particles
-!
-!                   ENDDO
+                   DO  n = 1, number_of_particles
+
+                     !<KM_FLAG
+                     SELECT CASE (class_num)
+                        CASE(0)
+                          WRITE(100,"(4F20.7)"), particles(n)%x,               &
+                                                 particles(n)%y,               &
+                                                 particles(n)%z,               &
+                                                 particles(n)%radius
+                     END SELECT
+
+                   ENDDO
 
                 ENDDO
              ENDDO
@@ -245,6 +254,8 @@
                 ENDDO
              ENDDO
           ENDDO     
+
+          CLOSE( 100 )
 
        ENDDO ! end of time loop
 

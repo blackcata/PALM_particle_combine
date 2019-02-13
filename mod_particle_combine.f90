@@ -39,7 +39,7 @@ MODULE particle_combine_module
       total_particle_number = 0
 
       target_time  =  97200.0
-      eps_t        =  10.0
+      eps_t        =  1000000.0
 
       dir_name   = "/home/km109/PALM_60/JOBS/NP_test/OUTPUT/LAT_40_H0_200_TIME_12DAY/NP_test_prt_dat.021/"
 
@@ -74,7 +74,6 @@ MODULE particle_combine_module
               IF(i_proc == 0) WRITE(100,*) 'ZONE'
               IF(i_proc == 0) WRITE(100,*) 'SOLUTIONTIME =',simulated_time
 
-              CLOSE(100)
           END SELECT
       END IF 
 
@@ -96,7 +95,7 @@ MODULE particle_combine_module
       INTEGER,INTENT(IN)  ::  number_of_particles
       REAL(KIND=8),INTENT(IN)  ::  simulated_time
 
-      IF ( abs(simulated_time - target_time) < eps_t ) THEN 
+      IF ( abs(simulated_time - target_time) < 10.0 ) THEN 
           total_particle_number = total_particle_number + number_of_particles
       END IF 
 
