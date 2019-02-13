@@ -2,7 +2,7 @@ F90=ifort
 FCFLAGS=-O3
 
 TARGET= PARTICLE_COMBINE.exe
-OBJECT= IO_module.f90 mod_particle_combine.f90 read_prt_data.f90
+OBJECT= IO_module.o mod_particle_combine.o read_prt_data.o
 
 all : $(TARGET)
 $(TARGET) : $(OBJECT)
