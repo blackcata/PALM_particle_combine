@@ -80,7 +80,7 @@ MODULE particle_combine_module
                 IF(i_proc == 0) WRITE(100,*) 'SOLUTIONTIME =',simulated_time
 
               CASE(1)
-                WRITE(slice_num,"(I3.0)") INT(target_z)
+                WRITE(slice_num,"(I4.3)") INT(target_z)
                 file_name = TRIM(dir_name)//"RESULT/particle_xy_"//             &
                             TRIM(slice_num)//"_time_"//TRIM(time_num)//".plt"
                 OPEN(100,FILE=TRIM(file_name),FORM='FORMATTED',POSITION='APPEND')
