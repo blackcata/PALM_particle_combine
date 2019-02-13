@@ -243,6 +243,13 @@
                                                      particles(n)%y,           &
                                                      particles(n)%radius
                           END IF
+                        CASE(2)
+                          IF ( abs(particles(n)%x - target_x) < eps_x .AND.    &
+                               abs(simulated_time - target_time) < eps_t )  THEN
+                              WRITE(100,"(3F20.7)"), particles(n)%y,           &
+                                                     particles(n)%z,           &
+                                                     particles(n)%radius
+                          END IF
                      END SELECT
 
                    ENDDO

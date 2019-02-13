@@ -14,7 +14,7 @@ MODULE particle_combine_module
     IMPLICIT NONE
 
     INTEGER  :: total_particle_number, class_num 
-    REAL(KIND=8)  ::  target_time, eps_t, target_z, eps_z  
+    REAL(KIND=8)  ::  target_time, eps_t, target_z, eps_z, target_x, eps_x
 
     SAVE
 
@@ -28,14 +28,15 @@ MODULE particle_combine_module
 !                                                             2019.02.12 K.Noh !
 !                                                                              !
 !   class_num  =  0 : all data                                                 !
-!                 1 : xy slice
+!                 1 : xy slice                                                 !
+!                 2 : yz slice                                                 !
 !                                                                              !
 !------------------------------------------------------------------------------!
   SUBROUTINE initial_setting
 
       IMPLICIT NONE
 
-      class_num = 1
+      class_num = 0
 
       total_particle_number = 0
 
@@ -44,6 +45,9 @@ MODULE particle_combine_module
 
       target_z     = -10.0 
       eps_z        = 2.5
+
+      target_x     = 150.0 
+      eps_x        = 2.5
 
       dir_name   = "/home/km109/PALM_60/JOBS/NP_test/OUTPUT/LAT_40_H0_200_TIME_12DAY/NP_test_prt_dat.021/"
 
@@ -89,6 +93,15 @@ MODULE particle_combine_module
                 IF(i_proc == 0) WRITE(100,*) 'ZONE'
                 IF(i_proc == 0) WRITE(100,*) 'SOLUTIONTIME =',simulated_time
 
+              CASE(2)
+                WRITE(slice_num,"(I3.3)") INT(target_x)
+                file_name = TRIM(dir_name)//"RESULT/particle_yz_"//             &
+                            TRIM(slice_num)//"_time_"//TRIM(time_num)//".plt"
+                OPEN(100,FILE=TRIM(file_name),FORM='FORMATTED',POSITION='APPEND')
+
+                IF(i_proc == 0) WRITE(100,*) 'VARIABLES = Y,Z,PHY'
+                IF(i_proc == 0) WRITE(100,*) 'ZONE'
+                IF(i_proc == 0) WRITE(100,*) 'SOLUTIONTIME =',simulated_time
           END SELECT
       END IF 
 
