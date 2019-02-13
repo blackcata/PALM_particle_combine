@@ -116,7 +116,7 @@
     WRITE (i_proc_char,'(''_'',I6.6)')  i_proc
 
     !<KM_FLAG
-    dir_name   = "/home/km109/PALM_60/JOBS/NP_test/OUTPUT/LAT_40_H0_200_TIME_12DAY/NP_test_prt_dat.021/"
+    CALL initial_setting
     path_name  = TRIM(dir_name)//TRIM(i_proc_char)
     INQUIRE ( FILE=path_name, EXIST=found )
     !INQUIRE ( FILE=i_proc_char, EXIST=found )
@@ -214,6 +214,10 @@
              DO  jp = nys, nyn
                 DO  kp = nzb+1, nzt
                    number_of_particles = prt_count(kp,jp,ip)
+                   
+                   !<KM_FLAG
+                   CALL particle_count(simulated_time,number_of_particles)
+
                    IF ( number_of_particles <= 0 )  CYCLE
                    particles => grid_particles(kp,jp,ip)%particles
 !
@@ -242,5 +246,7 @@
        CLOSE( 85 )
 
     ENDDO ! end of file loop
+
+    WRITE(*,*) "TOTAL NUMBER OF PARTICLES : ", total_particle_number
 
  END PROGRAM read_prt_data
