@@ -188,10 +188,14 @@
 !--    Start individual time loop
        DO
           READ( 85, IOSTAT=status)  simulated_time
+
           IF ( status < 0 )  THEN
              PRINT*, '*** end of file reached'
              EXIT
           ENDIF
+
+          !<KM_FLAG
+          IF (i_proc == 0 ) CALL write_header(simulated_time,i_proc)
           PRINT*, '*** time of analyzed data set:', simulated_time
 
           READ ( 85 )  prt_count

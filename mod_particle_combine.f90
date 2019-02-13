@@ -47,9 +47,45 @@ MODULE particle_combine_module
   
 !------------------------------------------------------------------------------!
 !                                                                              !
+!   SUBROUTINE : write_header                                                  !
+!                                                                              !
+!   PURPOSE : write the header of each output files                            !
+!                                                                              !
+!                                                             2019.02.13 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
+  SUBROUTINE write_header(simulated_time,i_proc)
+
+      IMPLICIT NONE
+
+      INTEGER,INTENT(IN)  ::  i_proc
+      REAL(KIND=8),INTENT(IN)  ::  simulated_time
+      
+      CHARACTER(LEN=200)  ::  time_num, file_name 
+
+      IF ( abs(simulated_time - target_time) < eps_t ) THEN 
+          WRITE(time_num,"(I7.7)") INT(simulated_time)
+          SELECT CASE (class_num)
+              CASE(0) 
+              file_name = TRIM(dir_name)//"RESULT/particle_3d_time_"//TRIM(time_num)//".plt"
+              OPEN(100,FILE=TRIM(file_name),FORM='FORMATTED',POSITION='APPEND')
+
+              IF(i_proc == 0) WRITE(100,*) 'VARIABLES = X,Y,W'
+              IF(i_proc == 0) WRITE(100,*) 'ZONE'
+              IF(i_proc == 0) WRITE(100,*) 'SOLUTIONTIME =',simulated_time
+
+              CLOSE(100)
+          END SELECT
+      END IF 
+
+  END SUBROUTINE write_header
+
+!------------------------------------------------------------------------------!
+!                                                                              !
 !   SUBROUTINE : particle_count                                                !
 !                                                                              !
 !   PURPOSE : Count the total the number of particles of total simulation      !
+!                                                                              !
 !                                                             2019.02.13 K.Noh !
 !                                                                              !
 !------------------------------------------------------------------------------!
@@ -60,7 +96,7 @@ MODULE particle_combine_module
       INTEGER,INTENT(IN)  ::  number_of_particles
       REAL(KIND=8),INTENT(IN)  ::  simulated_time
 
-      IF ( (simulated_time - target_time) < eps_t ) THEN 
+      IF ( abs(simulated_time - target_time) < eps_t ) THEN 
           total_particle_number = total_particle_number + number_of_particles
       END IF 
 

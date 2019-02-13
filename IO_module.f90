@@ -40,9 +40,9 @@
               !------------------------------------------------------------------!
               path_name = TRIM(dir_name)//"RESULT"
               print*,path_name
-              CALL SYSTEM('mkdir '//TRIM(path_name))
-              CALL SYSTEM('rm -rf ./'//TRIM(path_name)//'/*.plt')
+              CALL SYSTEM('mkdir  '//TRIM(path_name))
+              CALL SYSTEM('rm -rf '//TRIM(path_name)//'/*.plt')
 
             END SUBROUTINE FOLDER_SETUP
-
+          
           END MODULE IO_module
