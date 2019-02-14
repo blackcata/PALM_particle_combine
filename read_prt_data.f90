@@ -132,6 +132,7 @@
        WRITE (i_proc_char,'(''_'',I6.6)')  i_proc
        INQUIRE ( FILE=path_name, EXIST=found )
     ENDDO
+    i_proc = i_proc - 1
 !
 !-- Info-output
     PRINT*, ''
