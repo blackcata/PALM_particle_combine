@@ -116,6 +116,7 @@
     WRITE (i_proc_char,'(''_'',I6.6)')  i_proc
 
     !<KM_FLAG
+    !<  Initialize the RESULT folder and get basic setup for combining
     CALL initial_setting
     CALL FOLDER_SETUP
     path_name  = TRIM(dir_name)//TRIM(i_proc_char)
@@ -154,9 +155,9 @@
        WRITE (i_proc_char,'(''_'',I6.6)')  i_proc
 
        !<KM_FLAG
+       !<  Open the each CPU's particle file
        path_name  =  TRIM(dir_name)//TRIM(i_proc_char)
        OPEN ( 85, FILE=path_name, FORM='UNFORMATTED' )
-       !OPEN ( 85, FILE=i_proc_char, FORM='UNFORMATTED' ) 
 !
 !--    Read general description of file and inform user
        READ ( 85 )  run_description_header
@@ -196,6 +197,7 @@
           ENDIF
 
           !<KM_FLAG
+          !<  Open the each'time-step's file and write the headers
           CALL write_header(simulated_time,i_proc)
           PRINT*, '*** time of analyzed data set:', simulated_time
 
@@ -222,6 +224,7 @@
                    number_of_particles = prt_count(kp,jp,ip)
                    
                    !<KM_FLAG
+                   !<  Count the total simulated particles 
                    CALL particle_count(simulated_time,number_of_particles)
 
                    IF ( number_of_particles <= 0 )  CYCLE
@@ -231,12 +234,15 @@
                    DO  n = 1, number_of_particles
 
                      !<KM_FLAG
+                     !<  Write each particle data to each time-step file 
                      SELECT CASE (class_num)
+                        !<  Full 3D case header
                         CASE(0)
                           WRITE(100,"(4F20.7)"), particles(n)%x,               &
                                                  particles(n)%y,               &
                                                  particles(n)%z,               &
                                                  particles(n)%radius
+                        !<  xy slice case header
                         CASE(1)
                           IF ( abs(particles(n)%z - target_z) < eps_z .AND.    &
                                abs(simulated_time - target_time) < eps_t )  THEN
@@ -244,6 +250,7 @@
                                                      particles(n)%y,           &
                                                      particles(n)%radius
                           END IF
+                        !<  yz slice case header
                         CASE(2)
                           IF ( abs(particles(n)%x - target_x) < eps_x .AND.    &
                                abs(simulated_time - target_time) < eps_t )  THEN
