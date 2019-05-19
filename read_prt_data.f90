@@ -187,7 +187,7 @@
           DEALLOCATE( prt_count, grid_particles )
        ENDIF
 
-       ALLOCATE( prt_count(nzb:nzt+1,nys-nbgp:nyn+nbgp,nxl-nbgp:nxr+nbgp),     &
+       ALLOCATE( prt_count(nzb:nzt+1,nys-nbgp:nyn+nbgp,nxl-nbgp:nxr+nbgp),      &
                  grid_particles(nzb+1:nzt,nys:nyn,nxl:nxr) )
 
 !
@@ -243,27 +243,30 @@
                         !<  Full 3D case header
                         CASE(0)
                           chl = (4.0/3.0)*pi*particles(n)%radius**3*phy_den
-                          WRITE(100,"(3F20.7,E20.7)"), particles(n)%x,         &
-                                                       particles(n)%y,         &
-                                                       particles(n)%z,         &
-                                                       chl
+                          WRITE(100,"(I20.7,3F20.7,E20.7)"),particles(n)%id,    &
+                                                            particles(n)%x,     &
+                                                            particles(n)%y,     &
+                                                            particles(n)%z,     &
+                                                            chl
                         !<  xy slice case header
                         CASE(1)
-                          IF ( abs(particles(n)%z - target_z) < eps_z .AND.    &
+                          IF ( abs(particles(n)%z - target_z) < eps_z .AND.     &
                                abs(simulated_time - target_time) < eps_t )  THEN
                               chl = (4.0/3.0)*pi*particles(n)%radius**3*phy_den
-                              WRITE(100,"(2F20.7,E20.7)"), particles(n)%x,     &
-                                                           particles(n)%y,     &
-                                                           chl
+                              WRITE(100,"(I20.7,2F20.7,E20.7)"),particles(n)%id,&
+                                                                particles(n)%x, &
+                                                                particles(n)%y, &
+                                                                chl
                           END IF
                         !<  yz slice case header
                         CASE(2)
-                          IF ( abs(particles(n)%x - target_x) < eps_x .AND.    &
+                          IF ( abs(particles(n)%x - target_x) < eps_x .AND.     &
                                abs(simulated_time - target_time) < eps_t )  THEN
                               chl = (4.0/3.0)*pi*particles(n)%radius**3*phy_den
-                              WRITE(100,"(2F20.7,E20.7)"), particles(n)%y,     &
-                                                           particles(n)%z,     &
-                                                           chl
+                              WRITE(100,"(I20.7,2F20.7,E20.7)"),particles(n)%id,&
+                                                                particles(n)%y, &
+                                                                particles(n)%z, &
+                                                                chl
                           END IF
                      END SELECT
 
