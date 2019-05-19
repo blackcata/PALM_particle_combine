@@ -62,6 +62,10 @@
                      number_of_particle_groups, n, nxl,                        &
                      nxr, nys, nyn, nzb, nzt, nbgp, status
 
+    !<KM FLAG
+    REAL(KIND=8)  ::  chl
+    REAL(KIND=8)  ::  pi = 3.14159265359, phy_den = 1030.0
+    
     INTEGER, DIMENSION(:,:,:), ALLOCATABLE ::  prt_count
 
     TYPE particle_type
@@ -238,25 +242,28 @@
                      SELECT CASE (class_num)
                         !<  Full 3D case header
                         CASE(0)
-                          WRITE(100,"(4F20.7)"), particles(n)%x,               &
-                                                 particles(n)%y,               &
-                                                 particles(n)%z,               &
-                                                 particles(n)%radius
+                          chl = (4.0/3.0)*pi*particles(n)%radius**3*phy_den
+                          WRITE(100,"(3F20.7,E20.7)"), particles(n)%x,         &
+                                                       particles(n)%y,         &
+                                                       particles(n)%z,         &
+                                                       chl
                         !<  xy slice case header
                         CASE(1)
                           IF ( abs(particles(n)%z - target_z) < eps_z .AND.    &
                                abs(simulated_time - target_time) < eps_t )  THEN
-                              WRITE(100,"(3F20.7)"), particles(n)%x,           &
-                                                     particles(n)%y,           &
-                                                     particles(n)%radius
+                              chl = (4.0/3.0)*pi*particles(n)%radius**3*phy_den
+                              WRITE(100,"(2F20.7,E20.7)"), particles(n)%x,     &
+                                                           particles(n)%y,     &
+                                                           chl
                           END IF
                         !<  yz slice case header
                         CASE(2)
                           IF ( abs(particles(n)%x - target_x) < eps_x .AND.    &
                                abs(simulated_time - target_time) < eps_t )  THEN
-                              WRITE(100,"(3F20.7)"), particles(n)%y,           &
-                                                     particles(n)%z,           &
-                                                     particles(n)%radius
+                              chl = (4.0/3.0)*pi*particles(n)%radius**3*phy_den
+                              WRITE(100,"(2F20.7,E20.7)"), particles(n)%y,     &
+                                                           particles(n)%z,     &
+                                                           chl
                           END IF
                      END SELECT
 
