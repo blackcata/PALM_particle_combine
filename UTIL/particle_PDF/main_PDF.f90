@@ -35,6 +35,9 @@
             END DO 
             CLOSE(85)
 
+            ALLOCATE( par_id(1:N_par,1:Nt), x(1:N_par,1:Nt), y(1:N_par,1:Nt) )
+            ALLOCATE( z(1:N_par,1:Nt), chl(1:N_par,1:Nt) )
+
             OPEN(85, FILE=path_name, FORM='FORMATTED')
             ALLOCATE(file_name_list(1:Nt))
             DO it = 1,Nt
@@ -46,5 +49,6 @@
                 CALL read_par_data(file_1_name)
             END DO 
 
+            DEALLOCATE(par_id, x, y, z, chl)
 
         END PROGRAM 

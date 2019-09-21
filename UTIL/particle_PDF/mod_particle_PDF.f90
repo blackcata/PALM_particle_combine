@@ -12,10 +12,10 @@
 
             IMPLICIT NONE
 
-            INTEGER             ::  N_par, Nt, ind_str, ind_end
+            INTEGER             ::  N_par, Nt, ind_str, ind_end, ind_t
             CHARACTER(LEN=200)  ::  data_path
 
-            REAL(KIND=8),DIMENSION(:),ALLOCATABLE  :: par_id, x, y, z, chl
+            REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE  :: par_id, x, y, z, chl
 
             SAVE 
 
@@ -27,12 +27,10 @@
                 Nt         =  0
                 ind_str    =  1
                 ind_end    =  577
+                ind_t      =  0 
 
                 N_par      =  90000
                 data_path  =  "./DATA/BC_SGS_Q0_1.0_U_0.01_LAT_40_H0_120_TIME_12DAY/"
-
-                ALLOCATE( par_id(1:N_par), x(1:N_par), y(1:N_par), z(1:N_par) ) 
-                ALLOCATE( chl(1:N_par) )
 
             END SUBROUTINE PDF_init_setting 
 
@@ -43,6 +41,7 @@
                 INTEGER   :: it 
                 CHARACTER(LEN=200)             :: tmp_header
 
+                ind_t      =  ind_t + 1 
                 dir_name   =  data_path 
                 path_name  =  TRIM(dir_name)//TRIM(file_name)
                 
@@ -50,12 +49,12 @@
                 !--Read headers of each file 
                 DO it = 1,3
                     READ(85,*)  tmp_header
-                    PRINT*, tmp_header
                 END DO 
 
                 !--Read each particle id & position & concentration 
                 DO it = 1,N_par
-                    READ(85,*) par_id(it), x(it), y(it), z(it), chl(it)
+                    READ(85,*) par_id(it,ind_t), x(it,ind_t), y(it,ind_t),     &
+                                                 z(it,ind_t), chl(it,ind_t)
                 END DO 
 
             END SUBROUTINE read_par_data
