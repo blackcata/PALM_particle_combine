@@ -9,6 +9,12 @@
 !------------------------------------------------------------------------------!
 
         PROGRAM main_PDF 
-          USE particle_PDF_module
+            USE IO_module
+            USE particle_PDF_module
+
+            IMPLICIT NONE
+            
+            dir_name = "./"
+            CALL FOLDER_SETUP
 
         END PROGRAM 
