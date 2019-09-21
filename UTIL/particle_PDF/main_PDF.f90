@@ -17,7 +17,7 @@
             INTEGER  ::  it, iostatus
 
             dir_name = "./"
-            call folder_setup
+            CALL FOLDER_SETUP
           
             CALL PDF_init_setting
 
@@ -30,12 +30,20 @@
             !--Read each particle id & position & concentration 
             DO it = 1,N_par
                 READ(85,*,IOSTAT=iostatus) file_1_name
-                path_name    =  TRIM(dir_name)//TRIM(file_1_name)
                 IF (iostatus < 0) EXIT
-
                 Nt = Nt + 1
-                CALL read_par_data(file_1_name)
+            END DO 
+            CLOSE(85)
 
+            OPEN(85, FILE=path_name, FORM='FORMATTED')
+            ALLOCATE(file_name_list(1:Nt))
+            DO it = 1,Nt
+                READ(85,*,IOSTAT=iostatus) file_name_list(it)
+            END DO 
+                
+            DO it = ind_str,ind_end
+                file_1_name  =  file_name_list(it)
+                CALL read_par_data(file_1_name)
             END DO 
 
 

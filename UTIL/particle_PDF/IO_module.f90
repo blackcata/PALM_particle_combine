@@ -11,6 +11,7 @@
           MODULE IO_module
 
             CHARACTER(LEN=200) :: file_1_name, file_2_name, dir_name, path_name
+            CHARACTER(LEN=200),DIMENSION(:),ALLOCATABLE  :: file_name_list
 
           !--------------------------------------------------------------------!
           !                   Interfaces of IO Subroutines                     !

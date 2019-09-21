@@ -12,7 +12,7 @@
 
             IMPLICIT NONE
 
-            INTEGER             ::  N_par, Nt
+            INTEGER             ::  N_par, Nt, ind_str, ind_end
             CHARACTER(LEN=200)  ::  data_path
 
             REAL(KIND=8),DIMENSION(:),ALLOCATABLE  :: par_id, x, y, z, chl
@@ -25,6 +25,9 @@
                 IMPLICIT NONE
 
                 Nt         =  0
+                ind_str    =  1
+                ind_end    =  577
+
                 N_par      =  90000
                 data_path  =  "./DATA/BC_SGS_Q0_1.0_U_0.01_LAT_40_H0_120_TIME_12DAY/"
 
