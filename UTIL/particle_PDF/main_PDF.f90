@@ -16,5 +16,10 @@
             
             dir_name = "./"
             CALL FOLDER_SETUP
+          
+            CALL PDF_init_setting
+
+            file_1_name  = "particle_3d_time_1036649.plt"
+            CALL read_par_data(file_1_name)
 
         END PROGRAM 

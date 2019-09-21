@@ -2,7 +2,7 @@ F90=ifort
 FCFLAGS=-O3
 
 TARGET= PARTICLE_PDF.exe
-OBJECT= mod_particle_PDF.o main_PDF.o
+OBJECT= IO_module.o mod_particle_PDF.o main_PDF.o
 
 all : $(TARGET)
 $(TARGET) : $(OBJECT)
