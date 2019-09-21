@@ -15,12 +15,20 @@
             INTEGER             ::  N_par, Nt, ind_str, ind_end, ind_t
             CHARACTER(LEN=200)  ::  data_path
 
-            REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE  :: par_id, x, y, z, chl
+            REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE  :: par_id, z, chl
 
             SAVE 
 
             CONTAINS
 
+!------------------------------------------------------------------------------!
+!                                                                              !
+!   SUBROUTINE : PDF_initial_setting                                           !
+!                                                                              !
+!   PURPOSE : Initial setup for PDF Calcuation                                 !
+!                                                             2019.09.21 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
             SUBROUTINE PDF_init_setting
                 IMPLICIT NONE
 
@@ -34,11 +42,21 @@
 
             END SUBROUTINE PDF_init_setting 
 
+!------------------------------------------------------------------------------!
+!                                                                              !
+!   SUBROUTINE : read_par_data                                                 !
+!                                                                              !
+!   PURPOSE : Read particle datas properties                                   !
+!                                                             2019.09.21 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
+
             SUBROUTINE read_par_data(file_name)
                 IMPLICIT NONE
                 CHARACTER(LEN=200),INTENT(IN)  :: file_name
 
                 INTEGER   :: it 
+                REAL(KIND=8)  :: tmp_1, tmp_2
                 CHARACTER(LEN=200)             :: tmp_header
 
                 ind_t      =  ind_t + 1 
@@ -53,10 +71,22 @@
 
                 !--Read each particle id & position & concentration 
                 DO it = 1,N_par
-                    READ(85,*) par_id(it,ind_t), x(it,ind_t), y(it,ind_t),     &
-                                                 z(it,ind_t), chl(it,ind_t)
+                    READ(85,*) par_id(it,ind_t), tmp_1, tmp_2,                  &
+                               z(it,ind_t), chl(it,ind_t)
                 END DO 
 
             END SUBROUTINE read_par_data
+
+!------------------------------------------------------------------------------!
+!                                                                              !
+!   SUBROUTINE : calc_PDF                                                      !
+!                                                                              !
+!   PURPOSE : Calculate PDF from input 1D arrays                               !
+!                                                             2019.09.21 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
+            SUBROUTINE calc_PDF
+                IMPLICIT NONE
+            END SUBROUTINE calc_PDF
 
         END MODULE particle_PDF_module
