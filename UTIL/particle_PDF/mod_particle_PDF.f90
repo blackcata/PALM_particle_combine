@@ -12,7 +12,10 @@
 
             IMPLICIT NONE
 
+            INTEGER             ::  N_par
             CHARACTER(LEN=200)  ::  data_path
+
+            REAL(KIND=8),DIMENSION(:),ALLOCATABLE  :: par_id, x, y, z, chl
 
             SAVE 
 
@@ -21,7 +24,11 @@
             SUBROUTINE PDF_init_setting
                 IMPLICIT NONE
 
+                N_par      =  90000
                 data_path  =  "./DATA/BC_SGS_Q0_1.0_U_0.01_LAT_40_H0_120_TIME_12DAY/"
+
+                ALLOCATE( par_id(1:N_par), x(1:N_par), y(1:N_par), z(1:N_par) ) 
+                ALLOCATE( chl(1:N_par) )
 
             END SUBROUTINE PDF_init_setting 
 
@@ -40,6 +47,10 @@
                 DO it = 1,3
                     READ(85,*)  tmp_header
                     PRINT*, tmp_header
+                END DO 
+
+                DO it = 1,N_par
+                    READ(85,*) par_id(it), x(it), y(it), z(it), chl(it)
                 END DO 
 
             END SUBROUTINE read_par_data
