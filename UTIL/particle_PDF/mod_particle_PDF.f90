@@ -12,7 +12,7 @@
 
             IMPLICIT NONE
 
-            INTEGER             ::  N_par
+            INTEGER             ::  N_par, Nt
             CHARACTER(LEN=200)  ::  data_path
 
             REAL(KIND=8),DIMENSION(:),ALLOCATABLE  :: par_id, x, y, z, chl
@@ -24,6 +24,7 @@
             SUBROUTINE PDF_init_setting
                 IMPLICIT NONE
 
+                Nt         =  0
                 N_par      =  90000
                 data_path  =  "./DATA/BC_SGS_Q0_1.0_U_0.01_LAT_40_H0_120_TIME_12DAY/"
 
@@ -49,6 +50,7 @@
                     PRINT*, tmp_header
                 END DO 
 
+                !--Read each particle id & position & concentration 
                 DO it = 1,N_par
                     READ(85,*) par_id(it), x(it), y(it), z(it), chl(it)
                 END DO 

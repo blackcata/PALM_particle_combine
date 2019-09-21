@@ -14,12 +14,29 @@
 
             IMPLICIT NONE
             
+            INTEGER  ::  it, iostatus
+
             dir_name = "./"
-            CALL FOLDER_SETUP
+            call folder_setup
           
             CALL PDF_init_setting
 
-            file_1_name  = "particle_3d_time_1036649.plt"
-            CALL read_par_data(file_1_name)
+            dir_name     =  data_path 
+            file_2_name  =  "file_name_list.dat" 
+            path_name    =  TRIM(dir_name)//TRIM(file_2_name)
+
+            OPEN(85, FILE=path_name, FORM='FORMATTED')
+
+            !--Read each particle id & position & concentration 
+            DO it = 1,N_par
+                READ(85,*,IOSTAT=iostatus) file_1_name
+                path_name    =  TRIM(dir_name)//TRIM(file_1_name)
+                IF (iostatus < 0) EXIT
+
+                Nt = Nt + 1
+                CALL read_par_data(file_1_name)
+
+            END DO 
+
 
         END PROGRAM 
