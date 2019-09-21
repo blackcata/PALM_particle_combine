@@ -29,12 +29,18 @@
                 IMPLICIT NONE
                 CHARACTER(LEN=200),INTENT(IN)  :: file_name
 
+                INTEGER   :: it 
+                CHARACTER(LEN=200)             :: tmp_header
+
                 dir_name   =  data_path 
                 path_name  =  TRIM(dir_name)//TRIM(file_name)
                 
-                PRINT*, dir_name
-                PRINT*, file_name
-                PRINT*, path_name
+                OPEN(85, FILE=path_name, FORM='FORMATTED')
+                !--Read headers of each file 
+                DO it = 1,3
+                    READ(85,*)  tmp_header
+                    PRINT*, tmp_header
+                END DO 
 
             END SUBROUTINE read_par_data
 
