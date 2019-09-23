@@ -12,11 +12,11 @@
             IMPLICIT NONE
 
             INTEGER             ::  N_par, Nt, Nt_loc, ind_str, ind_end, ind_t
-            REAL(KIND=8)        ::  D, GN, gam, h_e
+            REAL(KIND=8)        ::  D, GN, gam, h_e, dt, N_hour
             CHARACTER(LEN=200)  ::  data_path
 
             INTEGER(KIND=8),DIMENSION(:),ALLOCATABLE  :: par_id
-            REAL(KIND=8),DIMENSION(:),ALLOCATABLE    :: tmp_1D, CEA
+            REAL(KIND=8),DIMENSION(:),ALLOCATABLE    :: tmp_1D, CEA, NVG
             REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE  :: z, chl
 
             SAVE 
@@ -42,13 +42,14 @@
                 N_par      =  90000
                 data_path  =  "./DATA/BC_LAT_40_H0_120_TIME_12DAY/"
 
-                D    =   0.1
-                GN   =   1.0
-                gam  =   0.1 
-                h_e  =  -1.0 / gam * log(D/GN)
-                h_e  =  13!-1.0 / gam * log(D/GN)
+                D    =   0.1 ! Plankton Death Rate  [day^-1]
+                GN   =   1.0 ! Plankton Growth rate * Nutrient [day^-1]
+                gam  =   0.1 ! Light Attenuation Coefficient [m^-1]
+                h_e  =  -1.0 / gam * log(D/GN) ! Critical Depth[m]
 
-                ALLOCATE( CEA(1:N_par) ) 
+                dt   =  150.0 ! Time step of particle output [s]
+
+                ALLOCATE( CEA(1:N_par), NVG(1:N_par) ) 
 
             END SUBROUTINE PDF_init_setting 
 
@@ -144,6 +145,35 @@
                 CEA(1:N_par)  =  CEA(1:N_par) / Nt_loc
 
             END SUBROUTINE calc_CEA
+
+!------------------------------------------------------------------------------!
+!                                                                              !
+!   SUBROUTINE : calc_NVG                                                      !
+!                                                                              !
+!   PURPOSE : Calculate the Number of Vertical Grids Visited                   !
+!                                                             2019.09.23 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
+            SUBROUTINE calc_NVG(z_tot)
+                IMPLICIT NONE
+
+                INTEGER :: it, par 
+                REAL(KIND=8),DIMENSION(:,:),INTENT(IN)  :: z_tot
+
+                N_hour  = Nt_loc * dt / 3600. ! [hour]
+
+                NVG(1:N_par)  =  0.0
+                PRINT*,Nt_loc,dt,N_hour
+                DO par = 1,N_par
+                    DO it = 2,Nt_loc
+                        NVG(par)  = NVG(par) +                                  &
+                                    FLOOR(z_tot(par,it) - z_tot(par,it-1))
+                    END DO 
+                END DO 
+
+                NVG(1:N_par)  =  NVG(1:N_par) / N_hour
+
+            END SUBROUTINE calc_NVG
 
 !------------------------------------------------------------------------------!
 !                                                                              !

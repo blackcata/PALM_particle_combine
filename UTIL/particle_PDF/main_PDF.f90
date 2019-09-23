@@ -63,10 +63,11 @@
             DO it = ind_str,ind_end
                 file_1_name  =  file_name_list(it)
                 CALL read_par_data(file_1_name)
-                PRINT*,file_name_list(it)
+                PRINT*,TRIM(file_name_list(it))
             END DO 
             
             CALL calc_CEA(z)
+            CALL calc_NVG(z)
 
             !--Calculate the PDF of Z poisition of each particle
             PDF_min    =  -100.0
