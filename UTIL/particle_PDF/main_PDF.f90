@@ -63,6 +63,7 @@
             !--Read part of particle files
             Nt_loc  =  (ind_end - ind_str) + 1     
             ALLOCATE( z(1:N_par,1:Nt_loc), chl(1:N_par,1:Nt_loc) )
+            ALLOCATE( dCHL(1:N_par,1:Nt_loc-1) )
             DO it = ind_str,ind_end
                 file_1_name  =  file_name_list(it)
                 CALL read_par_data(file_1_name)
@@ -71,6 +72,7 @@
             
             CALL calc_CEA(z)
             CALL calc_NVG(z)
+            CALL calc_dCHL(chl)
 
             !-------------------------------------------------------------------!
             !                       CALCULATING EACH PDF                        !
@@ -109,6 +111,9 @@
             file_1_name  =  "Total_CHL.dat"
             CALL write_par_data(file_1_name,chl,"E")
 
-            DEALLOCATE(par_id, z, chl, CEA)
+            file_1_name  =  "Total_dCHL.dat"
+            CALL write_par_data(file_1_name,dCHL,"E")
+
+            DEALLOCATE(par_id, z, chl, CEA, NVG, dCHL)
 
         END PROGRAM 

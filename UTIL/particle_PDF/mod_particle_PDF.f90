@@ -17,7 +17,7 @@
 
             INTEGER(KIND=8),DIMENSION(:),ALLOCATABLE  :: par_id
             REAL(KIND=8),DIMENSION(:),ALLOCATABLE    :: tmp_1D, CEA, NVG
-            REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE  :: z, chl
+            REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE  :: z, chl, dCHL
 
             SAVE 
 
@@ -163,7 +163,6 @@
                 N_hour  = Nt_loc * dt / 3600. ! [hour]
 
                 NVG(1:N_par)  =  0.0
-                PRINT*,Nt_loc,dt,N_hour
                 DO par = 1,N_par
                     DO it = 2,Nt_loc
                         NVG(par)  = NVG(par) +                                  &
@@ -174,6 +173,29 @@
                 NVG(1:N_par)  =  NVG(1:N_par) / N_hour
 
             END SUBROUTINE calc_NVG
+
+!------------------------------------------------------------------------------!
+!                                                                              !
+!   SUBROUTINE : calc_dCHL                                                     !
+!                                                                              !
+!   PURPOSE : Calculate the chlorophyll growth rate                            !
+!                                                             2019.09.23 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
+            SUBROUTINE calc_dCHL(chl_tot)
+                IMPLICIT NONE
+
+                INTEGER :: it, par 
+                REAL(KIND=8),DIMENSION(:,:),INTENT(IN)  :: chl_tot
+
+                dCHL(1:N_par,1:Nt_loc-1)  =  0.0
+                DO par = 1,N_par
+                    DO it = 1,Nt_loc-1
+                        dCHL(par,it)  = (chl_tot(par,it+1) - chl_tot(par,it))/dt 
+                    END DO 
+                END DO 
+
+            END SUBROUTINE calc_dCHL
 
 !------------------------------------------------------------------------------!
 !                                                                              !
