@@ -83,7 +83,7 @@
             N_PDF      =  101
             dir_name   =  "./RESULT/" ; file_1_name  =  "PDF_Z.dat" 
 
-            ALLOCATE( tmp_1d(1:SIZE(z)), PDF(1:N_PDF) )
+            ALLOCATE( tmp_1D(1:SIZE(z)), PDF(1:N_PDF) )
                 CALL convert_2D_1D(z,tmp_1D)
                 CALL calc_PDF(tmp_1D,PDF,PDF_min,PDF_max,N_PDF)
                 CALL write_PDF_data(file_1_name,PDF,PDF_min,PDF_max)
@@ -95,8 +95,44 @@
             N_PDF      =  101
             dir_name   =  "./RESULT/" ; file_1_name  =  "PDF_CHL.dat" 
 
-            ALLOCATE( tmp_1d(1:SIZE(z)), PDF(1:N_PDF) )
+            ALLOCATE( tmp_1D(1:SIZE(chl)), PDF(1:N_PDF) )
                 CALL convert_2D_1D(chl,tmp_1D)
+                CALL calc_PDF(tmp_1D,PDF,PDF_min,PDF_max,N_PDF)
+                CALL write_PDF_data(file_1_name,PDF,PDF_min,PDF_max)
+            DEALLOCATE( tmp_1d, PDF )
+
+            !--Calculate the PDF of CEA of each particle
+            PDF_min    =  0.0
+            PDF_max    =  1
+            N_PDF      =  101
+            dir_name   =  "./RESULT/" ; file_1_name  =  "PDF_CEA.dat" 
+
+            ALLOCATE( tmp_1D(1:SIZE(CEA)), PDF(1:N_PDF) )
+                tmp_1D  =  CEA
+                CALL calc_PDF(tmp_1D,PDF,PDF_min,PDF_max,N_PDF)
+                CALL write_PDF_data(file_1_name,PDF,PDF_min,PDF_max)
+            DEALLOCATE( tmp_1d, PDF )
+
+            !--Calculate the PDF of NVG of each particle
+            PDF_min    =  0.0
+            PDF_max    =  25
+            N_PDF      =  101
+            dir_name   =  "./RESULT/" ; file_1_name  =  "PDF_NVG.dat" 
+
+            ALLOCATE( tmp_1D(1:SIZE(NVG)), PDF(1:N_PDF) )
+                tmp_1D  =  NVG
+                CALL calc_PDF(tmp_1D,PDF,PDF_min,PDF_max,N_PDF)
+                CALL write_PDF_data(file_1_name,PDF,PDF_min,PDF_max)
+            DEALLOCATE( tmp_1d, PDF )
+
+            !--Calculate the PDF of dCHL of each particle
+            PDF_min    =  -1.5e-15
+            PDF_max    =  1.2e-14
+            N_PDF      =  101
+            dir_name   =  "./RESULT/" ; file_1_name  =  "PDF_dCHL.dat" 
+
+            ALLOCATE( tmp_1D(1:SIZE(dCHL)), PDF(1:N_PDF) )
+                CALL convert_2D_1D(dCHL,tmp_1D)
                 CALL calc_PDF(tmp_1D,PDF,PDF_min,PDF_max,N_PDF)
                 CALL write_PDF_data(file_1_name,PDF,PDF_min,PDF_max)
             DEALLOCATE( tmp_1d, PDF )

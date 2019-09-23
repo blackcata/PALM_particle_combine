@@ -166,7 +166,7 @@
                 DO par = 1,N_par
                     DO it = 2,Nt_loc
                         NVG(par)  = NVG(par) +                                  &
-                                    FLOOR(z_tot(par,it) - z_tot(par,it-1))
+                                    ABS(FLOOR(z_tot(par,it) - z_tot(par,it-1)))
                     END DO 
                 END DO 
 
