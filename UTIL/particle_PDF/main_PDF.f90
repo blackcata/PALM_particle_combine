@@ -24,6 +24,9 @@
           
             CALL PDF_init_setting
 
+            !-------------------------------------------------------------------!
+            !                     READING EACH PARTICLE FILE                    !
+            !-------------------------------------------------------------------!
             dir_name     =  data_path 
             file_2_name  =  "file_name_list.dat" 
             path_name    =  TRIM(dir_name)//TRIM(file_2_name)
@@ -69,6 +72,9 @@
             CALL calc_CEA(z)
             CALL calc_NVG(z)
 
+            !-------------------------------------------------------------------!
+            !                       CALCULATING EACH PDF                        !
+            !-------------------------------------------------------------------!
             !--Calculate the PDF of Z poisition of each particle
             PDF_min    =  -100.0
             PDF_max    =  0.0
@@ -93,6 +99,9 @@
                 CALL write_PDF_data(file_1_name,PDF,PDF_min,PDF_max)
             DEALLOCATE( tmp_1d, PDF )
 
+            !-------------------------------------------------------------------!
+            !                       WRITING OUTPUT FILES                        !
+            !-------------------------------------------------------------------!
             !--Write the total Z & CHL time series
             file_1_name  =  "Total_Z.dat"
             CALL write_par_data(file_1_name,z,"F")
