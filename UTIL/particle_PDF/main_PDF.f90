@@ -66,6 +66,8 @@
                 PRINT*,file_name_list(it)
             END DO 
             
+            CALL calc_CEA(z)
+
             !--Calculate the PDF of Z poisition of each particle
             PDF_min    =  -100.0
             PDF_max    =  0.0
@@ -97,6 +99,6 @@
             file_1_name  =  "Total_CHL.dat"
             CALL write_par_data(file_1_name,chl,"E")
 
-            DEALLOCATE(par_id, z, chl)
+            DEALLOCATE(par_id, z, chl, CEA)
 
         END PROGRAM 

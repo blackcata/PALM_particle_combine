@@ -12,10 +12,11 @@
             IMPLICIT NONE
 
             INTEGER             ::  N_par, Nt, Nt_loc, ind_str, ind_end, ind_t
+            REAL(KIND=8)        ::  D, GN, gam, h_e
             CHARACTER(LEN=200)  ::  data_path
 
             INTEGER(KIND=8),DIMENSION(:),ALLOCATABLE  :: par_id
-            REAL(KIND=8),DIMENSION(:),ALLOCATABLE    :: tmp_1D
+            REAL(KIND=8),DIMENSION(:),ALLOCATABLE    :: tmp_1D, CEA
             REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE  :: z, chl
 
             SAVE 
@@ -34,12 +35,20 @@
                 IMPLICIT NONE
 
                 Nt         =  0
-                ind_str    =  1
-                ind_end    =  3
+                ind_str    =  1001
+                ind_end    =  1010
                 ind_t      =  0 
 
                 N_par      =  90000
                 data_path  =  "./DATA/BC_LAT_40_H0_120_TIME_12DAY/"
+
+                D    =   0.1
+                GN   =   1.0
+                gam  =   0.1 
+                h_e  =  -1.0 / gam * log(D/GN)
+                h_e  =  13!-1.0 / gam * log(D/GN)
+
+                ALLOCATE( CEA(1:N_par) ) 
 
             END SUBROUTINE PDF_init_setting 
 
@@ -110,6 +119,31 @@
                 END DO 
 
             END SUBROUTINE convert_2D_1D
+
+!------------------------------------------------------------------------------!
+!                                                                              !
+!   SUBROUTINE : calc_CEA                                                      !
+!                                                                              !
+!   PURPOSE : Calculate the Cumulative Euphotic Age                            !
+!                                                             2019.09.23 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
+            SUBROUTINE calc_CEA(z_tot)
+                IMPLICIT NONE
+
+                INTEGER :: it, par 
+                REAL(KIND=8),DIMENSION(:,:),INTENT(IN)  :: z_tot
+
+                CEA(1:N_par)  =  0.0
+                DO par = 1,N_par
+                    DO it = 1,Nt_loc
+                        IF (z_tot(par,it) > -h_e) CEA(par)  =  CEA(par) + 1 
+                    END DO 
+                END DO 
+
+                CEA(1:N_par)  =  CEA(1:N_par) / Nt_loc
+
+            END SUBROUTINE calc_CEA
 
 !------------------------------------------------------------------------------!
 !                                                                              !
@@ -206,7 +240,7 @@
 
                 path_name  =  TRIM(dir_name)//TRIM(file_name)
                 WRITE(str_Nt,"(I3)") N2
-                format_2D  =  "("//TRIM(str_Nt)//TRIM(write_type)//"18.10)"  
+                format_2D="("//TRIM(str_Nt)//TRIM(write_type)//"18.10)"
                 OPEN(85, FILE=path_name, FORM='FORMATTED')
                 DO it = 1,N1
                     WRITE(85,format_2D) input_2D(it,:)
