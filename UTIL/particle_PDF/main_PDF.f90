@@ -142,13 +142,19 @@
             !-------------------------------------------------------------------!
             !--Write the total Z & CHL time series
             file_1_name  =  "Total_Z.dat"
-            CALL write_par_data(file_1_name,z,"F")
+            CALL write_par_2D_data(file_1_name,z,"F")
 
             file_1_name  =  "Total_CHL.dat"
-            CALL write_par_data(file_1_name,chl,"E")
+            CALL write_par_2D_data(file_1_name,chl,"E")
 
-            file_1_name  =  "Total_dCHL.dat"
-            CALL write_par_data(file_1_name,dCHL,"E")
+!            file_1_name  =  "Total_dCHL.dat"
+!            CALL write_par_2D_data(file_1_name,dCHL,"E")
+
+            file_1_name  =  "Total_CEA.dat"
+            CALL write_par_1D_data(file_1_name,CEA,"E")
+
+            file_1_name  =  "Total_NVG.dat"
+            CALL write_par_1D_data(file_1_name,NVG,"F")
 
             DEALLOCATE(par_id, z, chl, CEA, NVG, dCHL)
 

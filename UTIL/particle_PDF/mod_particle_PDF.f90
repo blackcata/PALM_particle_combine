@@ -268,14 +268,45 @@
 
 !------------------------------------------------------------------------------!
 !                                                                              !
-!   SUBROUTINE : write_par_data                                                !
+!   SUBROUTINE : write_par_1D_data                                             !
 !                                                                              !
 !   PURPOSE : Read particle datas properties                                   !
 !                                                             2019.09.23 K.Noh !
 !                                                                              !
 !------------------------------------------------------------------------------!
 
-            SUBROUTINE write_par_data(file_name,input_2D,write_type)
+            SUBROUTINE write_par_1D_data(file_name,input_1D,write_type)
+                IMPLICIT NONE
+
+                REAL(KIND=8),DIMENSION(:),INTENT(IN)  ::  input_1D
+                CHARACTER(LEN=1),INTENT(IN)    :: write_type
+                CHARACTER(LEN=200),INTENT(IN)  :: file_name
+
+                INTEGER  :: it, N
+                CHARACTER(LEN=100)    :: str_Nt, format_1D
+
+                N  =  SIZE(input_1D)
+
+                path_name  =  TRIM(dir_name)//TRIM(file_name)
+                format_1D="("//TRIM(write_type)//"18.10)"
+                OPEN(85, FILE=path_name, FORM='FORMATTED')
+                DO it = 1,N
+                    WRITE(85,format_1D) input_1D(it)
+                END DO 
+                CLOSE(85)
+
+            END SUBROUTINE write_par_1D_data
+
+!------------------------------------------------------------------------------!
+!                                                                              !
+!   SUBROUTINE : write_par_2D_data                                             !
+!                                                                              !
+!   PURPOSE : Read particle datas properties                                   !
+!                                                             2019.09.23 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
+
+            SUBROUTINE write_par_2D_data(file_name,input_2D,write_type)
                 IMPLICIT NONE
 
                 REAL(KIND=8),DIMENSION(:,:),INTENT(IN)  ::  input_2D
@@ -299,6 +330,6 @@
                 END DO 
                 CLOSE(85)
 
-            END SUBROUTINE write_par_data
+            END SUBROUTINE write_par_2D_data
 
         END MODULE particle_PDF_module
