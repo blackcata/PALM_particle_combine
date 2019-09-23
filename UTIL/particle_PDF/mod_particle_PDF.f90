@@ -12,9 +12,10 @@
 
             IMPLICIT NONE
 
-            INTEGER             ::  N_par, Nt, ind_str, ind_end, ind_t
+            INTEGER             ::  N_par, Nt, Nt_loc, ind_str, ind_end, ind_t
             CHARACTER(LEN=200)  ::  data_path
 
+            REAL(KIND=8),DIMENSION(:),ALLOCATABLE    :: tmp_1D
             REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE  :: par_id, z, chl
 
             SAVE 
@@ -97,10 +98,10 @@
                 N_2D  =  SHAPE(input_2D)
                 N_1D  =  SIZE(output_1D)
                 
-                DO it = 1,N_2D(1) 
-                    ind_str  =  (it-1) * N_2D(2) + 1
-                    ind_end  =  (it) * N_2D(2)
-                    output_1D(ind_str:ind_end)  =  input_2D(it,:)
+                DO it = 1,N_2D(2) 
+                    ind_str  =  (it-1) * N_2D(1) + 1
+                    ind_end  =  (it) * N_2D(1)
+                    output_1D(ind_str:ind_end)  =  input_2D(:,it)
                 END DO 
 
             END SUBROUTINE convert_2D_1D
@@ -126,13 +127,13 @@
 
                 dPDF     =  (PDF_max - PDF_min) / (N_PDF-1)
                 N_input  =  SIZE(input)
-
+                PDF(1:N_PDF)  = 0.0
                 DO it = 1,N_input
                     DO it_bin  =  1,N_PDF
                         tmp_bin  =  PDF_min + dPDF * (it_bin -1)
                         IF ( input(it) > tmp_bin - dPDF*0.5        .AND.        &
                              input(it) < tmp_bin + dPDF*0.5) THEN 
-                            PDF(it)  =  PDF(it) + 1 
+                            PDF(it_bin)  =  PDF(it_bin) + 1 
                             EXIT
                         END IF
                     END DO 
