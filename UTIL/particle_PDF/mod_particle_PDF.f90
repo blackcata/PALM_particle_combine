@@ -13,7 +13,7 @@
 
             INTEGER             ::  N_par, Nt, Nt_loc, ind_str, ind_end, ind_t
             REAL(KIND=8)        ::  D, GN, gam, h_e, dt, N_hour
-            CHARACTER(LEN=200)  ::  data_path
+            CHARACTER(LEN=200)  ::  data_path, result_path
 
             INTEGER(KIND=8),DIMENSION(:),ALLOCATABLE  :: par_id
             REAL(KIND=8),DIMENSION(:),ALLOCATABLE    :: tmp_1D, CEA, NVG
@@ -35,8 +35,8 @@
                 IMPLICIT NONE
 
                 Nt         =  0
-                ind_str    =  1001
-                ind_end    =  1010
+                ind_str    =  578
+                ind_end    =  1153
                 ind_t      =  0 
 
                 N_par      =  90000
@@ -48,6 +48,8 @@
                 h_e  =  -1.0 / gam * log(D/GN) ! Critical Depth[m]
 
                 dt   =  150.0 ! Time step of particle output [s]
+
+                result_path   =  "./RESULT/"
 
                 ALLOCATE( CEA(1:N_par), NVG(1:N_par) ) 
 

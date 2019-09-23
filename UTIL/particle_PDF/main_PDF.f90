@@ -77,11 +77,13 @@
             !-------------------------------------------------------------------!
             !                       CALCULATING EACH PDF                        !
             !-------------------------------------------------------------------!
+            dir_name  =  result_path 
+
             !--Calculate the PDF of Z poisition of each particle
             PDF_min    =  -100.0
             PDF_max    =  0.0
-            N_PDF      =  101
-            dir_name   =  "./RESULT/" ; file_1_name  =  "PDF_Z.dat" 
+            N_PDF      =  51
+            file_1_name  =  "PDF_Z.dat" 
 
             ALLOCATE( tmp_1D(1:SIZE(z)), PDF(1:N_PDF) )
                 CALL convert_2D_1D(z,tmp_1D)
@@ -92,8 +94,8 @@
             !--Calculate the PDF of CHL Concentration of each particle
             PDF_min    =  0.0
             PDF_max    =  3.0e-9
-            N_PDF      =  101
-            dir_name   =  "./RESULT/" ; file_1_name  =  "PDF_CHL.dat" 
+            N_PDF      =  51
+            file_1_name  =  "PDF_CHL.dat" 
 
             ALLOCATE( tmp_1D(1:SIZE(chl)), PDF(1:N_PDF) )
                 CALL convert_2D_1D(chl,tmp_1D)
@@ -104,8 +106,8 @@
             !--Calculate the PDF of CEA of each particle
             PDF_min    =  0.0
             PDF_max    =  1
-            N_PDF      =  101
-            dir_name   =  "./RESULT/" ; file_1_name  =  "PDF_CEA.dat" 
+            N_PDF      =  51
+            file_1_name  =  "PDF_CEA.dat" 
 
             ALLOCATE( tmp_1D(1:SIZE(CEA)), PDF(1:N_PDF) )
                 tmp_1D  =  CEA
@@ -116,8 +118,8 @@
             !--Calculate the PDF of NVG of each particle
             PDF_min    =  0.0
             PDF_max    =  25
-            N_PDF      =  101
-            dir_name   =  "./RESULT/" ; file_1_name  =  "PDF_NVG.dat" 
+            N_PDF      =  51
+            file_1_name  =  "PDF_NVG.dat" 
 
             ALLOCATE( tmp_1D(1:SIZE(NVG)), PDF(1:N_PDF) )
                 tmp_1D  =  NVG
@@ -128,8 +130,8 @@
             !--Calculate the PDF of dCHL of each particle
             PDF_min    =  -1.5e-15
             PDF_max    =  1.2e-14
-            N_PDF      =  101
-            dir_name   =  "./RESULT/" ; file_1_name  =  "PDF_dCHL.dat" 
+            N_PDF      =  51
+            file_1_name  =  "PDF_dCHL.dat" 
 
             ALLOCATE( tmp_1D(1:SIZE(dCHL)), PDF(1:N_PDF) )
                 CALL convert_2D_1D(dCHL,tmp_1D)
@@ -147,8 +149,8 @@
             file_1_name  =  "Total_CHL.dat"
             CALL write_par_2D_data(file_1_name,chl,"E")
 
-!            file_1_name  =  "Total_dCHL.dat"
-!            CALL write_par_2D_data(file_1_name,dCHL,"E")
+            file_1_name  =  "Total_dCHL.dat"
+            CALL write_par_2D_data(file_1_name,dCHL,"E")
 
             file_1_name  =  "Total_CEA.dat"
             CALL write_par_1D_data(file_1_name,CEA,"E")
