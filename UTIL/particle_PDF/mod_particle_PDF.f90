@@ -39,7 +39,7 @@
                 ind_t      =  0 
 
                 N_par      =  90000
-                data_path  =  "./DATA/BC_SGS_Q0_1.0_U_0.01_LAT_40_H0_120_TIME_12DAY/"
+                data_path  =  "./DATA/BC_LAT_40_H0_120_TIME_12DAY/"
 
             END SUBROUTINE PDF_init_setting 
 
@@ -75,6 +75,7 @@
                     READ(85,*) par_id(it,ind_t), tmp_1, tmp_2,                  &
                                z(it,ind_t), chl(it,ind_t)
                 END DO 
+                CLOSE(85)
 
             END SUBROUTINE read_par_data
 
@@ -142,5 +143,37 @@
                 PDF  =  PDF / N_input 
 
             END SUBROUTINE calc_PDF
+
+!------------------------------------------------------------------------------!
+!                                                                              !
+!   SUBROUTINE : write_PDF_data                                                !
+!                                                                              !
+!   PURPOSE : Read particle datas properties                                   !
+!                                                             2019.09.23 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
+
+            SUBROUTINE write_PDF_data(file_name,PDF,PDF_min,PDF_max)
+                IMPLICIT NONE
+
+                REAL(KIND=8),INTENT(IN)  ::  PDF_min, PDF_max
+                REAL(KIND=8),DIMENSION(:),INTENT(IN)  ::  PDF
+                CHARACTER(LEN=200),INTENT(IN)  :: file_name
+
+                INTEGER   :: it, N_PDF
+                REAL(KIND=8)  :: tmp_bin, dPDF
+
+                N_PDF  =  SIZE(PDF)
+                dPDF     =  (PDF_max - PDF_min) / (N_PDF-1)
+
+                path_name  =  TRIM(dir_name)//TRIM(file_name)
+                OPEN(85, FILE=path_name, FORM='FORMATTED')
+                DO it = 1,N_PDF
+                    tmp_bin  =  PDF_min + dPDF * (it -1)
+                    WRITE(85,"(E18.10,F18.10)") tmp_bin, PDF(it)
+                END DO 
+                CLOSE(85)
+
+            END SUBROUTINE write_PDF_data
 
         END MODULE particle_PDF_module

@@ -20,7 +20,7 @@
             REAL(KIND=8),DIMENSION(:),ALLOCATABLE  :: PDF
 
             dir_name = "./"
-!            CALL FOLDER_SETUP
+            CALL FOLDER_SETUP
           
             CALL PDF_init_setting
 
@@ -62,6 +62,9 @@
             ALLOCATE( tmp_1d(1:SIZE(z)), PDF(1:N_PDF) )
             CALL convert_2D_1D(z,tmp_1D)
             CALL calc_PDF(tmp_1D,PDF,PDF_min,PDF_max,N_PDF)
+
+            dir_name   =  "./RESULT/" ; file_1_name  =  "PDF_Z.dat" 
+            CALL write_PDF_data(file_1_name,PDF,PDF_min,PDF_max)
             DEALLOCATE( tmp_1d, PDF )
 
             !--Calculate the PDF of CHL Concentration of each particle
@@ -72,6 +75,9 @@
             ALLOCATE( tmp_1d(1:SIZE(z)), PDF(1:N_PDF) )
             CALL convert_2D_1D(chl,tmp_1D)
             CALL calc_PDF(tmp_1D,PDF,PDF_min,PDF_max,N_PDF)
+
+            dir_name   =  "./RESULT/" ; file_1_name  =  "PDF_CHL.dat" 
+            CALL write_PDF_data(file_1_name,PDF,PDF_min,PDF_max)
             DEALLOCATE( tmp_1d, PDF )
 
             DEALLOCATE(par_id, z, chl)
