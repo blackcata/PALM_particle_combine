@@ -15,8 +15,9 @@
             INTEGER             ::  N_par, Nt, Nt_loc, ind_str, ind_end, ind_t
             CHARACTER(LEN=200)  ::  data_path
 
+            INTEGER(KIND=8),DIMENSION(:),ALLOCATABLE  :: par_id
             REAL(KIND=8),DIMENSION(:),ALLOCATABLE    :: tmp_1D
-            REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE  :: par_id, z, chl
+            REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE  :: z, chl
 
             SAVE 
 
@@ -54,11 +55,13 @@
 
             SUBROUTINE read_par_data(file_name)
                 IMPLICIT NONE
+                INTRINSIC  :: findloc
                 CHARACTER(LEN=200),INTENT(IN)  :: file_name
 
-                INTEGER   :: it 
-                REAL(KIND=8)  :: tmp_1, tmp_2
-                CHARACTER(LEN=200)             :: tmp_header
+                INTEGER             ::  it, ind_ID(1)
+                INTEGER(KIND=8)     ::  tmp_id
+                REAL(KIND=8)        ::  tmp_1, tmp_2, tmp_z, tmp_chl
+                CHARACTER(LEN=200)  ::  tmp_header
 
                 ind_t      =  ind_t + 1 
                 dir_name   =  data_path 
@@ -72,8 +75,10 @@
 
                 !--Read each particle id & position & concentration 
                 DO it = 1,N_par
-                    READ(85,*) par_id(it,ind_t), tmp_1, tmp_2,                  &
-                               z(it,ind_t), chl(it,ind_t)
+                    READ(85,*) tmp_id, tmp_1, tmp_2, tmp_z, tmp_chl
+                    ind_ID  = FINDLOC(par_id,VALUE=tmp_id) 
+                    z(ind_ID,ind_t)    =  tmp_z
+                    chl(ind_ID,ind_t)  =  tmp_chl
                 END DO 
                 CLOSE(85)
 

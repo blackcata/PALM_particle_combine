@@ -15,7 +15,7 @@
             IMPLICIT NONE
             
             INTEGER  ::  it, iostatus
-            INTEGER  :: N_PDF
+            INTEGER  ::  N_PDF
             REAL(KIND=8)  :: PDF_min, PDF_max
             REAL(KIND=8),DIMENSION(:),ALLOCATABLE  :: PDF
 
@@ -43,17 +43,29 @@
             DO it = 1,Nt
                 READ(85,*,IOSTAT=iostatus) file_name_list(it)
             END DO 
+            CLOSE(85)
               
+            !--Read total particle ID number
+            dir_name     =  "./DATA/"
+            file_2_name  =  "particle_ID.dat" 
+            path_name    =  TRIM(dir_name)//TRIM(file_2_name)
+            ALLOCATE( par_id(1:N_par) ) 
+
+            OPEN(100, FILE=path_name, FORM='FORMATTED')
+            DO it = 1,N_par
+                READ(100,*) par_id(it)
+            END DO 
+            CLOSE(100) 
+            print*,FINDLOC(par_id,VALUE=1017502280214)
+
             !--Read part of particle files
             Nt_loc  =  (ind_end - ind_str) + 1     
-            ALLOCATE( par_id(1:N_par,1:Nt_loc) )
             ALLOCATE( z(1:N_par,1:Nt_loc), chl(1:N_par,1:Nt_loc) )
             DO it = ind_str,ind_end
                 file_1_name  =  file_name_list(it)
-                PRINT*,file_1_name
                 CALL read_par_data(file_1_name)
             END DO 
-
+            
             !--Calculate the PDF of Z poisition of each particle
             PDF_min    =  -100.0
             PDF_max    =  0.0
