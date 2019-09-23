@@ -1,5 +1,4 @@
 !------------------------------------------------------------------------------!
-!                                                                              !
 !   PROGRAM : mod_particle_PDF.f90                                             !
 !                                                                              !
 !   PURPOSE : Calculate particle propertie PDF(Probabillity Density Function)  !
@@ -36,7 +35,7 @@
 
                 Nt         =  0
                 ind_str    =  1
-                ind_end    =  10
+                ind_end    =  3
                 ind_t      =  0 
 
                 N_par      =  90000
@@ -153,7 +152,7 @@
 !                                                                              !
 !   SUBROUTINE : write_PDF_data                                                !
 !                                                                              !
-!   PURPOSE : Read particle datas properties                                   !
+!   PURPOSE : Write particle datas PDF                                         !
 !                                                             2019.09.23 K.Noh !
 !                                                                              !
 !------------------------------------------------------------------------------!
@@ -180,5 +179,40 @@
                 CLOSE(85)
 
             END SUBROUTINE write_PDF_data
+
+!------------------------------------------------------------------------------!
+!                                                                              !
+!   SUBROUTINE : write_par_data                                                !
+!                                                                              !
+!   PURPOSE : Read particle datas properties                                   !
+!                                                             2019.09.23 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
+
+            SUBROUTINE write_par_data(file_name,input_2D,write_type)
+                IMPLICIT NONE
+
+                REAL(KIND=8),DIMENSION(:,:),INTENT(IN)  ::  input_2D
+                CHARACTER(LEN=1),INTENT(IN)    :: write_type
+                CHARACTER(LEN=200),INTENT(IN)  :: file_name
+
+                INTEGER  :: it, N1, N2
+                INTEGER,DIMENSION(2)  :: N_2D
+                CHARACTER(LEN=100)    :: str_Nt, format_2D
+
+                N_2D  =  SHAPE(input_2D)
+                N1    =  N_2D(1)
+                N2    =  N_2D(2)
+
+                path_name  =  TRIM(dir_name)//TRIM(file_name)
+                WRITE(str_Nt,"(I3)") N2
+                format_2D  =  "("//TRIM(str_Nt)//TRIM(write_type)//"18.10)"  
+                OPEN(85, FILE=path_name, FORM='FORMATTED')
+                DO it = 1,N1
+                    WRITE(85,format_2D) input_2D(it,:)
+                END DO 
+                CLOSE(85)
+
+            END SUBROUTINE write_par_data
 
         END MODULE particle_PDF_module

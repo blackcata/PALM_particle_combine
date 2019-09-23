@@ -56,7 +56,6 @@
                 READ(100,*) par_id(it)
             END DO 
             CLOSE(100) 
-            print*,FINDLOC(par_id,VALUE=1017502280214)
 
             !--Read part of particle files
             Nt_loc  =  (ind_end - ind_str) + 1     
@@ -64,6 +63,7 @@
             DO it = ind_str,ind_end
                 file_1_name  =  file_name_list(it)
                 CALL read_par_data(file_1_name)
+                PRINT*,file_name_list(it)
             END DO 
             
             !--Calculate the PDF of Z poisition of each particle
@@ -89,6 +89,13 @@
                 CALL calc_PDF(tmp_1D,PDF,PDF_min,PDF_max,N_PDF)
                 CALL write_PDF_data(file_1_name,PDF,PDF_min,PDF_max)
             DEALLOCATE( tmp_1d, PDF )
+
+            !--Write the total Z & CHL time series
+            file_1_name  =  "Total_Z.dat"
+            CALL write_par_data(file_1_name,z,"F")
+
+            file_1_name  =  "Total_CHL.dat"
+            CALL write_par_data(file_1_name,chl,"E")
 
             DEALLOCATE(par_id, z, chl)
 
